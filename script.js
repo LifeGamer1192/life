@@ -4,6 +4,13 @@ let g = new Uint8Array(N * M);
 let stepCount = 0; // 追加: ステップ数カウンタ
 let aliveHistory = []; // 追加: 生存セル履歴
 
+// 追加: POST 表示タイマー
+let postOkTimestamp = 0;
+const POST_DISPLAY_MS = 5000;
+
+// 追加: バージョン番号（スクリプトを編集したら手動で +1 してください）
+const VERSION = 1; // <-- increment this value each time you change script.js
+
 // ---------- 追加: GAS 送信用 URL と送信関数 ----------
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwsRh5YSdYbVLL1EH-sEYvz9P6gh3EAO-FAaJBr0Ve8EPbR266lo587td_VzcItO7dWUQ/exec';
 
@@ -33,7 +40,8 @@ async function sendResult(alive, step) {
   try {
     if (navigator && navigator.sendBeacon) {
       const blob = new Blob([body], { type: 'text/plain' });
-      navigator.sendBeacon(GAS_URL, blob);
+      const queued = navigator.sendBeacon(GAS_URL, blob);
+      if (queued) postOkTimestamp = Date.now(); // queued なら表示
       return;
     }
   } catch (e) {
@@ -41,12 +49,17 @@ async function sendResult(alive, step) {
   }
 
   // フォールバック fetch（keepalive）
-  fetch(GAS_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain' },
-    body: body,
-    keepalive: true
-  }).catch(() => {});
+  try {
+    const resp = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: body,
+      keepalive: true
+    });
+    if (resp && resp.ok) postOkTimestamp = Date.now();
+  } catch (e) {
+    // ignore
+  }
 }
 // ---------- 追加ここまで ----------
 
@@ -124,34 +137,56 @@ function draw() {
     }
   }
 
-  // ステップ数と生存セル数を canvas 上に表示（左上、背景付き）
+  // ステップ数・バージョン・生存セル数を canvas 上に表示（左上、背景付き）
   const padding = 6;
   const fontSize = 14;
   ctx.font = `${fontSize}px sans-serif`;
   ctx.textBaseline = "top";
 
+  const versionText = `v${VERSION}`;
   const stepText = `Step: ${formatStep(stepCount)}`;
-  // 生きているセル数をカウント（最新）
   const aliveCount = aliveHistory.length ? aliveHistory[aliveHistory.length - 1] : g.reduce((s, v) => s + v, 0);
   const aliveText = `Alive: ${aliveCount}`;
 
+  const versionWidth = ctx.measureText(versionText).width;
   const stepWidth = ctx.measureText(stepText).width;
   const aliveWidth = ctx.measureText(aliveText).width;
-  const textWidth = Math.max(stepWidth, aliveWidth);
+  const textWidth = Math.max(versionWidth, stepWidth, aliveWidth);
 
   const boxX = 6;
   const boxY = 6;
   const lineGap = 4;
+  const lines = 3;
   const boxW = textWidth + padding * 2;
-  const boxH = fontSize * 2 + padding * 2 + lineGap;
+  const boxH = fontSize * lines + padding * 2 + lineGap * (lines - 1);
 
   ctx.fillStyle = "rgba(0,0,0,0.6)"; // 背景
   ctx.fillRect(boxX, boxY, boxW, boxH);
   ctx.fillStyle = "white"; // 文字色
 
-  // テキスト描画（上段: Step、下段: Alive）
-  ctx.fillText(stepText, boxX + padding, boxY + padding / 2);
-  ctx.fillText(aliveText, boxX + padding, boxY + padding / 2 + fontSize + lineGap);
+  // テキスト描画（上段: version、中央: Step、下段: Alive）
+  ctx.fillText(versionText, boxX + padding, boxY + padding / 2);
+  ctx.fillText(stepText, boxX + padding, boxY + padding / 2 + fontSize + lineGap);
+  ctx.fillText(aliveText, boxX + padding, boxY + padding / 2 + (fontSize + lineGap) * 2);
+
+  // POST 表示（送信成功 or queued から一定時間表示）
+  if (Date.now() - postOkTimestamp < POST_DISPLAY_MS) {
+    const badgeText = 'POST';
+    ctx.font = '12px sans-serif';
+    const bw = ctx.measureText(badgeText).width + 8;
+    const bh = 16;
+    const bx = boxX + boxW - bw - 6;
+    const by = boxY + 4;
+    ctx.fillStyle = 'rgba(0,128,0,0.9)';
+    ctx.fillRect(bx, by, bw, bh);
+    ctx.fillStyle = 'white';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillText(badgeText, bx + bw / 2, by + bh / 2);
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'top';
+    ctx.font = `${fontSize}px sans-serif`;
+  }
 
   // ゲームオーバー時は中央に大きく表示
   if (gameOver) {
