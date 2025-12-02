@@ -158,19 +158,23 @@ function draw() {
     const cw = M * cell;
     const ch = N * cell;
     const title = "GAME OVER";
-    const sub = `Step: ${formatStep(stepCount)}`;
+    const stepLine = `Step: ${formatStep(stepCount)}`;
+    const aliveFinal = aliveHistory.length ? aliveHistory[aliveHistory.length - 1] : g.reduce((s, v) => s + v, 0);
+    const aliveLine = `Alive: ${aliveFinal}`;
 
     const titleSize = Math.max(24, Math.floor(Math.min(cw, ch) / 12));
     const subSize = Math.max(14, Math.floor(titleSize / 2.2));
 
-    // 背景パネル
+    // 背景パネル（幅はタイトルと2行分のテキストの最大幅に合わせる）
     const pad = 20;
     ctx.font = `${titleSize}px sans-serif`;
     const tw = ctx.measureText(title).width;
     ctx.font = `${subSize}px sans-serif`;
-    const sw = ctx.measureText(sub).width;
+    const swStep = ctx.measureText(stepLine).width;
+    const swAlive = ctx.measureText(aliveLine).width;
+    const sw = Math.max(swStep, swAlive);
     const boxW2 = Math.max(tw, sw) + pad * 2;
-    const boxH2 = titleSize + subSize + pad * 2;
+    const boxH2 = titleSize + subSize * 2 + pad * 2 + 6; // 2行分の余白
 
     const boxX2 = (cw - boxW2) / 2;
     const boxY2 = (ch - boxH2) / 2;
@@ -178,15 +182,17 @@ function draw() {
     ctx.fillStyle = "rgba(0,0,0,0.7)";
     ctx.fillRect(boxX2, boxY2, boxW2, boxH2);
 
-    // テキスト
+    // テキスト描画（中央揃え）
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillStyle = "white";
     ctx.font = `${titleSize}px sans-serif`;
     ctx.fillText(title, cw / 2, boxY2 + pad / 2);
     ctx.font = `${subSize}px sans-serif`;
-    ctx.fillText(sub, cw / 2, boxY2 + pad / 2 + titleSize);
-    // reset align
+    ctx.fillText(stepLine, cw / 2, boxY2 + pad / 2 + titleSize);
+    ctx.fillText(aliveLine, cw / 2, boxY2 + pad / 2 + titleSize + subSize + 4);
+
+    // restore
     ctx.textAlign = "start";
     ctx.textBaseline = "top";
 
