@@ -18,6 +18,7 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbwsRh5YSdYbVLL1EH-sEYvz
 
 async function sendResult(alive, step) {
   console.log('[sendResult] start', { alive, step });
+
   // 公開IP取得（失敗しても送信は行う）
   let clientIp = '';
   try {
@@ -31,17 +32,20 @@ async function sendResult(alive, step) {
     clientIp = '';
   }
 
-  const payloadObj = {
+  // 必ずこのフィールド名で payload を作る
+  const payload = {
     timestamp: new Date().toISOString(),
     ip: clientIp,
     reverse_dns: '',
     alive_final: Number(alive) || 0,
     step_final: Number(step) || 0
   };
-  const body = JSON.stringify(payloadObj);
-  console.log('[sendResult] payload', payloadObj);
 
-  // sendBeacon を優先（Content-Type: text/plain で送る）
+  // body は必ず JSON.stringify(payload)
+  const body = JSON.stringify(payload);
+  console.log('[sendResult] payload', payload);
+
+  // 可能なら navigator.sendBeacon を使う（Blob に JSON 文字列）
   try {
     if (navigator && navigator.sendBeacon) {
       const blob = new Blob([body], { type: 'text/plain' });
@@ -60,7 +64,7 @@ async function sendResult(alive, step) {
     // fallthrough to fetch
   }
 
-  // フォールバック fetch（keepalive）
+  // フォールバック fetch（Content-Type: text/plain、body は JSON 文字列）
   try {
     const resp = await fetch(GAS_URL, {
       method: 'POST',
