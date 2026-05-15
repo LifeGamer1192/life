@@ -1,0 +1,56 @@
+# Plant species parameters for the Ecosystem Simulator.
+#
+# Edit values, save the file, then reload the page (Ctrl+F5) to apply.
+# Lines starting with # are comments; blank lines are ignored.
+# Numbers can be integers or floats. Inline comments after # are allowed.
+# Color is "R, G, B" with each value in 0-255.
+#
+# IMPORTANT: To load this file the page must be opened via a local
+# HTTP server (e.g. `python -m http.server 8000`). Most browsers
+# block fetch() on file:// URLs; in that case the script falls back
+# to built-in defaults and prints a warning to the developer console.
+# The status panel shows which source is in use.
+#
+# Each [Section] declares one plant species. The section name is the
+# display name. Add or remove sections freely; the simulator picks up
+# every species defined here.
+#
+# Field meanings:
+#   spriteFile   : 24x24 PNG in the same folder, used as the cell icon
+#   color        : "R, G, B" 0-255; legend swatch and fallback fill color
+#   optTemp      : optimal temperature, 0 (cold) - 1 (hot)
+#   optHum       : optimal humidity,    0 (dry)  - 1 (wet)
+#   growth       : biomass gain per step when fitness > 0.5
+#   decay        : biomass loss per step when fitness < 0.3
+#   maxBio       : maximum biomass per cell (drawing alpha caps here)
+#   spreadThresh : minimum biomass before attempting seed dispersal
+
+[Grass]
+spriteFile   = plant_grass.png
+color        = 200, 230, 80
+optTemp      = 0.55
+optHum       = 0.50
+growth       = 1.1
+decay        = 2.0
+maxBio       = 60
+spreadThresh = 25
+
+[Tree]
+spriteFile   = plant_tree.png
+color        = 40, 130, 50
+optTemp      = 0.72
+optHum       = 0.80
+growth       = 0.4
+decay        = 1.5
+maxBio       = 100
+spreadThresh = 50
+
+[Moss]
+spriteFile   = plant_moss.png
+color        = 130, 200, 210
+optTemp      = 0.15
+optHum       = 0.85
+growth       = 0.5
+decay        = 1.5
+maxBio       = 50
+spreadThresh = 20

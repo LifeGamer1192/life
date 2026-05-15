@@ -14,28 +14,27 @@ and carnivores.
 Older versions are reachable from the in-page **Other versions** link,
 or directly at <https://lifegamer1192.github.io/life/v4/index.html>.
 
-## Current state — v8
+## Current state — v9
 
-- 60 x 65 toroidal grid (780 x 720 canvas)
-- Per-cell temperature (vertical gradient) and humidity (random wetland
-  points), generated once at startup
-- 3 plant species (Grass / Tree / Moss) with climate-fit-based growth,
-  decay, and seed dispersal
-- 2 animal species (Herbivore / Carnivore) with vision-based pursuit,
-  flee-from-predator priority, energy metabolism, ageing, stochastic
-  reproduction (`reproChancePerStep`), `moveSpeed` per species
-- Delayed species spawning (`spawnStep`) with on-spawn flash effect
-  in the status panel
-- **Sustained three-way oscillation** observable for 2000+ steps with
-  the tuned defaults
-- UI: 3-speed control (Slow / Medium / Fast), Pause (Space key),
-  Manual Drop (per-species count adjuster), Run-log download button
-- **In-page parameter editor** (screen 2 overlay) for every per-species
-  field plus global plant rules, environment, and simulation settings.
-  Submit applies live and resumes; Cancel discards
-- Parameter sources: [`plants.txt`](plants.txt) and
+- 60 x 65 toroidal grid (780 x 720 canvas) with temperature / humidity layers
+- 3 plant species (Grass / Tree / Moss) + 2 animal species (Herbivore / Carnivore)
+- Vision-based pursuit, flee-from-predator priority, energy / age / stochastic
+  reproduction, `moveSpeed` per species, delayed spawning with flash effect
+- **Sustained three-way oscillation** observable for 2000+ steps
+- UI: 3-speed control, Pause (Space), Step (1-step while paused),
+  Manual Drop, Run-log download
+- **Per-species history**: simulation-end overlay shows a 5-series graph
+  with start/end step labels and color legend
+- **Hover tooltip**: pointing at any cell shows coords, temperature,
+  humidity, the plant species + biomass, and every animal present on
+  that cell (species, energy, age)
+- **Seeded PRNG** (mulberry32) with seed UI inside the parameter editor.
+  Same seed reproduces the same world step-by-step
+- In-page parameter editor (screen 2 overlay) for every per-species
+  field plus plant rules, environment, simulation settings, and seed
+- Parameter sources: [`plants.txt`](plants.txt) /
   [`animals.txt`](animals.txt) on HTTP, inline script blocks on file://
-- Per-version frozen snapshots under [`v4/`](v4/) ... [`v8/`](v8/),
+- Per-version frozen snapshots under [`v4/`](v4/) ... [`v9/`](v9/),
   accessed via [`index_old_version_menu.html`](index_old_version_menu.html)
 
 ## How to run
@@ -97,8 +96,8 @@ state at that moment so old behavior can be revisited later.
 | v5  | Herbivores + animal sprite + animals.txt (completed) |
 | v6  | Herbivore reproduction + run log (completed) |
 | v7  | Carnivores + flee behavior (completed) |
-| **v8** | **Three-way balance + live parameter editor (current)** |
-| v9  | Per-species graphs + observation UI |
+| v8  | Three-way balance + live parameter editor (completed) |
+| **v9** | **Per-species graphs + observation UI (current)** |
 | v10 | Seasons + final visual polish |
 | v11 | Mobile-responsive layout (added 2026-05-15) |
 | v9  | Per-species graphs + observation UI |

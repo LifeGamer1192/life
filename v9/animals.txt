@@ -1,0 +1,82 @@
+# Animal species parameters for the Ecosystem Simulator.
+#
+# Edit values, save the file, then reload the page (Ctrl+F5) to apply.
+# Lines starting with # are comments; blank lines are ignored.
+# Numbers can be integers or floats. Inline comments after # are allowed.
+# Color is "R, G, B" with each value in 0-255.
+#
+# Loading rules: same as plants.txt. Open via a local HTTP server
+# (e.g. `python -m http.server 8000`) to load this file; otherwise
+# the script falls back to built-in defaults and shows the source
+# indicator in the status panel.
+#
+# Each [Section] declares one animal species. Add or remove sections
+# freely. v5 only ships Herbivore; Carnivore arrives in v7.
+#
+# Field meanings:
+#   spriteFile        : 24x24 PNG in the same folder, used as the agent icon
+#   color             : "R, G, B" 0-255; legend swatch and fallback fill color
+#   initialCount      : number of individuals placed at start
+#   visionRange       : how many cells around the agent it can see (radius)
+#   maxEnergy         : energy cap (top of the energy bar)
+#   energyPerStep     : baseline energy drained every tick
+#   biteAmount        : food consumed in one feeding action
+#                       (plant biomass eaten OR meal value when eating prey)
+#   energyFromBiomass : energy gained = biteAmount * this multiplier
+#   lifespan          : maximum age in steps before natural death
+#   reproThreshold    : when energy reaches this value, the agent reproduces:
+#                       a newborn appears in a random neighbour cell and the
+#                       parent's energy is halved (so it cannot reproduce
+#                       again until it eats more)
+#   maxPopulation     : hard cap per species; no reproduction happens above it
+#   prey              : "plants" (eats plant biomass) OR the name of another
+#                       [Section] declared in this file (predator/prey)
+#                       Any species listed as someone's prey treats that
+#                       species as a predator and flees from it on sight.
+#   spawnStep         : step at which the species is introduced into the
+#                       world. 0 = present from the start. Use a positive
+#                       value to let plants flourish first.
+#                       When a species appears, its row in the status
+#                       panel flashes briefly.
+#   moveSpeed         : cells moved per step (default 1). Predators may
+#                       need a higher value than their prey to actually
+#                       catch them, since prey flees by 1 cell per step.
+#   reproChancePerStep: probability per step that the agent reproduces
+#                       once energy >= reproThreshold (default 1.0 =
+#                       reproduce every eligible step). Lowering this
+#                       value spreads out reproductions and damps the
+#                       initial population explosion.
+
+[Herbivore]
+spriteFile         = animal_herbivore.png
+color              = 240, 240, 240
+initialCount       = 5
+visionRange        = 3
+maxEnergy          = 100
+energyPerStep      = 0.6
+biteAmount         = 6
+energyFromBiomass  = 1.2
+lifespan           = 600
+reproThreshold     = 70
+maxPopulation      = 180
+prey               = plants
+spawnStep          = 700
+moveSpeed          = 1
+reproChancePerStep = 0.07
+
+[Carnivore]
+spriteFile         = animal_carnivore.png
+color              = 230, 80, 80
+initialCount       = 3
+visionRange        = 4
+maxEnergy          = 150
+energyPerStep      = 1.0
+biteAmount         = 25
+energyFromBiomass  = 1.0
+lifespan           = 700
+reproThreshold     = 115
+maxPopulation      = 20
+prey               = Herbivore
+spawnStep          = 1200
+moveSpeed          = 2
+reproChancePerStep = 0.08
