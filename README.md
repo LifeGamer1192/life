@@ -14,27 +14,29 @@ and carnivores.
 Older versions are reachable from the in-page **Other versions** link,
 or directly at <https://lifegamer1192.github.io/life/v4/index.html>.
 
-## Current state — v6
+## Current state — v7
 
 - 60 x 65 toroidal grid (780 x 720 canvas)
 - Per-cell temperature (vertical gradient, cold at top) and humidity
   (random wetland points), generated once at startup
 - 3 plant species — Grass, Tree, Moss — with climate-fit-based growth,
   decay, and seed dispersal
-- Herbivore agents with vision-based movement, biomass-eating, energy
-  drain, ageing, and **reproduction** (energy-split when above
-  `reproThreshold`, with a per-species `maxPopulation` cap)
+- 2 animal species — Herbivore (eats plants), Carnivore (eats Herbivore) —
+  with vision-based pursuit, **flee-from-predator priority**, energy
+  metabolism, ageing, and reproduction (energy-split with
+  `maxPopulation` cap)
+- Predator/prey relationships configured via the `prey` field in
+  [`animals.txt`](animals.txt)
 - Per-species sprite images (placeholders), with translucent-fill fallback
   when sprites have not yet loaded
 - Hand-editable parameters in [`plants.txt`](plants.txt) and
   [`animals.txt`](animals.txt)
 - Side status panel: version, step count, alive total, per-species counts
   for plants and animals, environment legend
-- **Downloadable run log** (TSV `.txt`, recorded every 20 steps) for
+- Downloadable run log (TSV `.txt`, recorded every 20 steps) for
   balance-tuning iteration
-- Per-version frozen snapshots under [`v4/`](v4/), [`v5/`](v5/),
-  [`v6/`](v6/), accessed via
-  [`index_old_version_menu.html`](index_old_version_menu.html)
+- Per-version frozen snapshots under [`v4/`](v4/) ... [`v7/`](v7/),
+  accessed via [`index_old_version_menu.html`](index_old_version_menu.html)
 
 ## How to run
 
@@ -93,9 +95,9 @@ state at that moment so old behavior can be revisited later.
 | v3  | Environment + plants + status panel (completed) |
 | v4  | Canvas expansion + plant sprites + plants.txt (completed) |
 | v5  | Herbivores + animal sprite + animals.txt (completed) |
-| **v6** | **Herbivore reproduction + run log (current)** |
-| v7  | Carnivores + flee behavior |
-| v8  | Carnivore reproduction + three-way balance |
+| v6  | Herbivore reproduction + run log (completed) |
+| **v7** | **Carnivores + flee behavior (current)** |
+| v8  | Three-way balance tuning |
 | v9  | Per-species graphs + observation UI |
 | v10 | Seasons + final visual polish |
 
