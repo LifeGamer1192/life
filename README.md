@@ -9,7 +9,10 @@ and carnivores.
 
 ## Live demo
 
-_The live demo URL will be added here once GitHub Pages is enabled._
+<https://lifegamer1192.github.io/life/>
+
+Older versions are reachable from the in-page **Other versions** link,
+or directly at <https://lifegamer1192.github.io/life/v4/index.html>.
 
 ## Current state — v4
 
