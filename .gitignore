@@ -1,0 +1,18 @@
+# Claude Code local settings (contains local paths and per-machine config)
+.claude/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor backups
+*.tmp
+*.bak
+*~
+
+# Logs
+*.log
+
+# Local-only secrets (e.g. a real GAS_URL override)
+config.local.js

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ecosystem Simulator</title>
+  <style>
+    body {
+      background: #222;
+      color: #eee;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    .topbar {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 40px 0;
+      font-size: 13px;
+      color: #999;
+    }
+    .topbar a {
+      color: #9df;
+      text-decoration: none;
+    }
+    .topbar a:hover {
+      text-decoration: underline;
+    }
+    .topbar .muted {
+      color: #777;
+    }
+    .container {
+      display: flex;
+      gap: 24px;
+      padding: 12px 40px 20px;
+      align-items: flex-start;
+    }
+    canvas {
+      border: 1px solid #555;
+      display: block;
+      background: #000;
+    }
+    #status {
+      width: 480px;
+      height: 720px;
+      box-sizing: border-box;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #555;
+      padding: 20px 24px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    #status h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+      color: #9df;
+      border-bottom: 1px solid #555;
+      padding-bottom: 6px;
+      letter-spacing: 0.05em;
+    }
+    #status h3 {
+      margin: 20px 0 8px;
+      font-size: 13px;
+      color: #cf9;
+      border-bottom: 1px dotted #555;
+      padding-bottom: 4px;
+      letter-spacing: 0.05em;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: 2px 0;
+    }
+    .row .key { color: #bbb; }
+    .row .val {
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 3px 0;
+    }
+    .swatch {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #555;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .swatch.circle { border-radius: 50%; }
+    .legend-row .label {
+      flex: 1;
+      color: #ddd;
+    }
+    .legend-row .count {
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+      min-width: 3em;
+      text-align: right;
+    }
+    .muted { opacity: 0.45; }
+    .gradient-bar {
+      height: 14px;
+      border: 1px solid #444;
+      border-radius: 2px;
+    }
+    .gradient-temp {
+      background: linear-gradient(to right,
+        rgb(60, 75, 115), rgb(125, 115, 100), rgb(190, 155, 90));
+    }
+    .gradient-humid {
+      background: linear-gradient(to right,
+        rgb(75, 80, 95), rgb(60, 130, 95), rgb(40, 130, 50));
+    }
+    .small {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 6px;
+    }
+    .note {
+      font-size: 11px;
+      color: #888;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span id="version-nav"></span>
+  </div>
+  <div class="container">
+    <canvas id="cv" width="780" height="720"></canvas>
+    <aside id="status">
+      <h2>STATUS</h2>
+      <div class="row"><span class="key">Version</span><span class="val" id="status-version">v?</span></div>
+      <div class="row"><span class="key">Step</span><span class="val" id="status-step">0</span></div>
+      <div class="row"><span class="key">Alive (Total)</span><span class="val" id="status-alive">0</span></div>
+
+      <h3>Plants</h3>
+      <div id="status-plants"></div>
+
+      <h3>Animals (planned for Stage 2/3)</h3>
+      <div class="legend-row muted">
+        <span class="swatch circle" style="background:#ffffff"></span>
+        <span class="label">Herbivore</span>
+        <span class="count">&mdash;</span>
+      </div>
+      <div class="legend-row muted">
+        <span class="swatch circle" style="background:#ff5050"></span>
+        <span class="label">Carnivore</span>
+        <span class="count">&mdash;</span>
+      </div>
+
+      <h3>Environment (Background)</h3>
+      <div class="small">Temperature: left = cold &harr; right = hot</div>
+      <div class="gradient-bar gradient-temp"></div>
+      <div class="small">Humidity: left = dry &harr; right = wet</div>
+      <div class="gradient-bar gradient-humid"></div>
+      <div class="note">
+        Background color is a blend of Temperature &times; Humidity.<br>
+        The grid has a vertical gradient: cold at top, warm at bottom.<br>
+        Humid spots are scattered as &ldquo;islands&rdquo;.
+      </div>
+    </aside>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
