@@ -14,27 +14,34 @@ and carnivores.
 Older versions are reachable from the in-page **Other versions** link,
 or directly at <https://lifegamer1192.github.io/life/v4/index.html>.
 
-## Current state — v9
+## Current state — v10
 
 - 60 x 65 toroidal grid (780 x 720 canvas) with temperature / humidity layers
-- 3 plant species (Grass / Tree / Moss) + 2 animal species (Herbivore / Carnivore)
-- Vision-based pursuit, flee-from-predator priority, energy / age / stochastic
-  reproduction, `moveSpeed` per species, delayed spawning with flash effect
-- **Sustained three-way oscillation** observable for 2000+ steps
+- **Seasonal cycle** (Spring / Summer / Autumn / Winter, 800 steps/year)
+  shifts an offset into every cell's effective temperature; status panel
+  shows the current season + offset, background tint changes accordingly
+- 3 plant species (Grass / Tree / Moss) + 2 animal species
+  (Herbivore = rabbit silhouette, Carnivore = wolf silhouette)
+- Vision-based pursuit, flee-from-predator priority, stochastic reproduction
+  (`reproChancePerStep`), per-species `moveSpeed`, delayed spawning
+- Animals drawn at 1.8x cell scale and flip horizontally to match movement
 - UI: 3-speed control, Pause (Space), Step (1-step while paused),
-  Manual Drop, Run-log download
-- **Per-species history**: simulation-end overlay shows a 5-series graph
-  with start/end step labels and color legend
-- **Hover tooltip**: pointing at any cell shows coords, temperature,
-  humidity, the plant species + biomass, and every animal present on
-  that cell (species, energy, age)
-- **Seeded PRNG** (mulberry32) with seed UI inside the parameter editor.
-  Same seed reproduces the same world step-by-step
-- In-page parameter editor (screen 2 overlay) for every per-species
+  Manual Drop with inline `cap` editor, Run-log download, Edit-parameters
+  button — all in a compact status panel header
+- Two-series mini graph (Plants total + Animals total) in the panel,
+  each normalized to its own range so both stay visible at once
+- 4 climate-forcing buttons (Temp -/+, Humidity -/+) near the legend bars
+  let the user warm / cool / dry / wet the world by 0.05 per click
+- Simulation-end overlay shows 5-series per-species graph with legend
+- Hover tooltip on canvas reports cell coords, temperature, humidity,
+  plant species + biomass, and every animal present on that cell
+- Seeded PRNG (mulberry32) with seed UI inside the parameter editor;
+  same seed reproduces the same world step-by-step
+- In-page parameter editor (screen 2 overlay) covers every per-species
   field plus plant rules, environment, simulation settings, and seed
-- Parameter sources: [`plants.txt`](plants.txt) /
-  [`animals.txt`](animals.txt) on HTTP, inline script blocks on file://
-- Per-version frozen snapshots under [`v4/`](v4/) ... [`v9/`](v9/),
+- Parameter sources: [`plants.txt`](plants.txt) / [`animals.txt`](animals.txt)
+  on HTTP, inline script blocks on file://
+- Per-version frozen snapshots under [`v4/`](v4/) ... [`v10/`](v10/),
   accessed via [`index_old_version_menu.html`](index_old_version_menu.html)
 
 ## How to run
@@ -97,9 +104,9 @@ state at that moment so old behavior can be revisited later.
 | v6  | Herbivore reproduction + run log (completed) |
 | v7  | Carnivores + flee behavior (completed) |
 | v8  | Three-way balance + live parameter editor (completed) |
-| **v9** | **Per-species graphs + observation UI (current)** |
-| v10 | Seasons + final visual polish |
-| v11 | Mobile-responsive layout (added 2026-05-15) |
+| v9  | Per-species graphs + observation UI (completed) |
+| **v10** | **Seasons + final visual polish (current)** |
+| v11 | Mobile-responsive layout (planned) |
 | v9  | Per-species graphs + observation UI |
 | v10 | Seasons + final visual polish |
 
