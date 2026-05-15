@@ -14,20 +14,23 @@ and carnivores.
 Older versions are reachable from the in-page **Other versions** link,
 or directly at <https://lifegamer1192.github.io/life/v4/index.html>.
 
-## Current state — v4
+## Current state — v5
 
 - 60 x 65 toroidal grid (780 x 720 canvas)
 - Per-cell temperature (vertical gradient, cold at top) and humidity
   (random wetland points), generated once at startup
 - 3 plant species — Grass, Tree, Moss — with climate-fit-based growth,
   decay, and seed dispersal
+- Herbivore agents (vision-based movement, eat biomass, age + energy,
+  die from starvation or old age; no reproduction yet — see v6)
 - Per-species sprite images (placeholders), with translucent-fill fallback
   when sprites have not yet loaded
-- Hand-editable plant parameters in [`plants.txt`](plants.txt)
-- Side status panel: version, step count, alive cells, per-species counts,
-  environment legend
-- Per-version frozen snapshots under [`v4/`](v4/), accessed via
-  [`index_old_version_menu.html`](index_old_version_menu.html)
+- Hand-editable parameters in [`plants.txt`](plants.txt) and
+  [`animals.txt`](animals.txt)
+- Side status panel: version, step count, alive total, per-species counts
+  for plants and animals, environment legend
+- Per-version frozen snapshots under [`v4/`](v4/), [`v5/`](v5/), accessed
+  via [`index_old_version_menu.html`](index_old_version_menu.html)
 
 ## How to run
 
@@ -84,8 +87,8 @@ state at that moment so old behavior can be revisited later.
 | ver | Theme |
 | --- | --- |
 | v3  | Environment + plants + status panel (completed) |
-| **v4** | **Canvas expansion + plant sprites + plants.txt (current)** |
-| v5  | Herbivores + animal sprite + animals.txt |
+| v4  | Canvas expansion + plant sprites + plants.txt (completed) |
+| **v5** | **Herbivores + animal sprite + animals.txt (current)** |
 | v6  | Herbivore reproduction |
 | v7  | Carnivores + flee behavior |
 | v8  | Carnivore reproduction + three-way balance |

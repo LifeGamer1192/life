@@ -1,0 +1,37 @@
+# Animal species parameters for the Ecosystem Simulator.
+#
+# Edit values, save the file, then reload the page (Ctrl+F5) to apply.
+# Lines starting with # are comments; blank lines are ignored.
+# Numbers can be integers or floats. Inline comments after # are allowed.
+# Color is "R, G, B" with each value in 0-255.
+#
+# Loading rules: same as plants.txt. Open via a local HTTP server
+# (e.g. `python -m http.server 8000`) to load this file; otherwise
+# the script falls back to built-in defaults and shows the source
+# indicator in the status panel.
+#
+# Each [Section] declares one animal species. Add or remove sections
+# freely. v5 only ships Herbivore; Carnivore arrives in v7.
+#
+# Field meanings:
+#   spriteFile        : 24x24 PNG in the same folder, used as the agent icon
+#   color             : "R, G, B" 0-255; legend swatch and fallback fill color
+#   initialCount      : number of individuals placed at start
+#   visionRange       : how many cells around the agent it can see (radius)
+#   maxEnergy         : energy cap; reaching this is also the reproduction
+#                       threshold (used from v6 onward)
+#   energyPerStep     : baseline energy drained every tick
+#   biteAmount        : biomass consumed from a plant cell in one bite
+#   energyFromBiomass : energy gained = biteAmount * this multiplier
+#   lifespan          : maximum age in steps before natural death
+
+[Herbivore]
+spriteFile        = animal_herbivore.png
+color             = 240, 240, 240
+initialCount      = 20
+visionRange       = 3
+maxEnergy         = 100
+energyPerStep     = 0.6
+biteAmount        = 12
+energyFromBiomass = 1.4
+lifespan          = 600
